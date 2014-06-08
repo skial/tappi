@@ -1,0 +1,14 @@
+{
+  "name": "tappi",
+  "license": "MIT",
+  "classPath": "src",
+  "tags": ["uhu", "uhx", "plugin", "loader", "neko"],
+  "description": "A Library which handles the loading of plugins cross-platform",
+  "contributors": ["skial"],
+  "releasenote": "Initial Release",
+  "version": "0.0.1-alpha",
+  "url": "https://github.com/skial/tappi",
+  "dependencies": {
+    
+  }
+}
