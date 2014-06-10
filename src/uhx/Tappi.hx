@@ -20,10 +20,13 @@ using sys.FileSystem;
 class Tappi {
 	
 	public static var paths:Array<String> = [];
-	public static var haxelib:Bool = false;
-	public static var libraries:Array<String> = [];
-	public static var classes:Map<String, Class<Dynamic>> = new Map();
 	public static var matches:Array<String> = [];
+	public static var libraries:Array<String> = [];
+	
+	public static var classes:Map<String, Class<Dynamic>> = new Map();
+	
+	public static var quiet:Bool = false;
+	public static var haxelib:Bool = false;
 	
 	public static function load():Void {
 		var cwd = Sys.getCwd().normalize();
@@ -51,7 +54,7 @@ class Tappi {
 				matches.push( location );
 				
 			} else {
-				Sys.println( 'The $lib plugin could not be found.' );
+				if (!quiet) Sys.println( 'The $lib plugin could not be found.' );
 				
 			}
 			
@@ -63,6 +66,7 @@ class Tappi {
 	
 	public static function loadModules():Void {
 		for (match in matches) {
+			if (!quiet) Sys.println( 'Loading $match...' );
 			var lib = match.withoutDirectory() + '.n';
 			Loader.local().addPath( match.replace( lib, '' ) );
 			classes.set( lib.withoutExtension(), Loader.local().loadModule( match.withoutExtension() ).execute() );
