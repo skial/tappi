@@ -67,7 +67,7 @@ class Tappi {
 	public static function loadModules():Void {
 		for (match in matches) {
 			if (!quiet) Sys.println( 'Loading $match...' );
-			var lib = match.withoutDirectory() + '.n';
+			var lib = match.withoutDirectory();
 			Loader.local().addPath( match.replace( lib, '' ) );
 			classes.set( lib.withoutExtension(), Loader.local().loadModule( match.withoutExtension() ).execute() );
 		}
