@@ -19,16 +19,21 @@ using sys.FileSystem;
  */
 class Tappi {
 	
-	public static var paths:Array<String> = [];
-	public static var matches:Array<String> = [];
-	public static var libraries:Array<String> = [];
+	public var paths:Array<String> = [];
+	public var matches:Array<String> = [];
+	public var libraries:Array<String> = [];
 	
-	public static var classes:Map<String, Class<Dynamic>> = new Map();
+	public var classes:Map<String, Class<Dynamic>> = new Map();
 	
-	public static var quiet:Bool = false;
-	public static var haxelib:Bool = false;
+	public var quiet:Bool = false;
+	public var haxelib:Bool = false;
 	
-	public static function load():Void {
+	public function new(?libraries:Array<String>, ?searchHaxelib:Bool = false) {
+		this.libraries = libraries == null ? [] : libraries;
+		this.haxelib = searchHaxelib;
+	}
+	
+	public function load():Void {
 		var cwd = Sys.getCwd().normalize();
 		
 		if (haxelib) searchHaxelib();
@@ -64,7 +69,7 @@ class Tappi {
 		
 	}
 	
-	public static function loadModules():Void {
+	public function loadModules():Void {
 		for (match in matches) {
 			if (!quiet) Sys.println( 'Loading $match...' );
 			var lib = match.withoutDirectory();
@@ -73,15 +78,7 @@ class Tappi {
 		}
 	}
 	
-	public static function reset():Void {
-		paths = [];
-		matches = [];
-		libraries = [];
-		haxelib = false;
-		classes = new Map();
-	}
-	
-	private static function searchHaxelib():Void {
+	private function searchHaxelib():Void {
 		var A = 'A'.code, Z = 'Z'.code;
 		var a = 'a'.code, z = 'z'.code;
 		var n0 = '0'.code, n9 = '9'.code;
