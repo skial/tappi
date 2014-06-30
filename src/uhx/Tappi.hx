@@ -33,7 +33,7 @@ class Tappi {
 		this.haxelib = useHaxelib;
 	}
 	
-	public function load():Void {
+	public function find():Void {
 		var cwd = Sys.getCwd().normalize();
 		
 		if (haxelib) searchHaxelib();
@@ -65,11 +65,9 @@ class Tappi {
 			
 		}
 		
-		loadModules();
-		
 	}
 	
-	public function loadModules():Void {
+	public function load():Void {
 		for (match in matches) {
 			if (!quiet) Sys.println( 'Loading $match...' );
 			var lib = match.withoutDirectory();
