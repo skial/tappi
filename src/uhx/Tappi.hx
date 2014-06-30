@@ -28,9 +28,9 @@ class Tappi {
 	public var quiet:Bool = false;
 	public var haxelib:Bool = false;
 	
-	public function new(?libraries:Array<String>, ?searchHaxelib:Bool = false) {
+	public function new(?libraries:Array<String>, ?useHaxelib:Bool = false) {
 		this.libraries = libraries == null ? [] : libraries;
-		this.haxelib = searchHaxelib;
+		this.haxelib = useHaxelib;
 	}
 	
 	public function load():Void {
@@ -76,6 +76,22 @@ class Tappi {
 			Loader.local().addPath( match.replace( lib, '' ) );
 			classes.set( lib.withoutExtension(), Loader.local().loadModule( match.withoutExtension() ).execute() );
 		}
+	}
+	
+	public function cache(name:String):Void {
+		var output = '${Sys.getCwd()}/$name'.normalize();
+		
+		#if neko
+		var process = new Process( 'nekoc', ['-link', '$output.n'].concat( matches.map( function(f) return f.withoutExtension() )) );
+		var error = process.stderr.readAll().toString().trim();
+		
+		if (error != '' && !quiet) {
+			Sys.println( error );
+		}
+		
+		process.exitCode();
+		process.close();
+		#end
 	}
 	
 	private function searchHaxelib():Void {
