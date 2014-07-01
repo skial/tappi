@@ -98,11 +98,10 @@ class Tappi {
 			if (!quiet) 'Loading $match...'.println();
 			
 			var lib = match.withoutDirectory();
-			Loader.local().addPath( match.replace( lib, '' ) );
-			
+			var module = Loader.local().loadModule( match.withoutExtension() );
 			classes.set( 
 				lib.withoutExtension(), 
-				Loader.local().loadModule( match.withoutExtension() ).execute()
+				module.execute()
 			);
 			
 		}
